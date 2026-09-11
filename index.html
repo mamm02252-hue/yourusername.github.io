@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>مكتبة الروايات | تعلم الإنجليزي بالقراءة</title>
+<meta name="description" content="مجموعة روايات بمستويات مختلفة تساعدك تطور لغتك الإنجليزية عن طريق القراءة، مع أهم الكلمات لكل رواية.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-inner">
+    <div class="brand">
+      <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M24 4L44 22H38V42H10V22H4L24 4Z" fill="#fff"/>
+        <rect x="16" y="26" width="16" height="16" fill="#12a894"/>
+      </svg>
+      <span class="brand-name">مكتبة <strong>الروايات</strong></span>
+    </div>
+    <h1>مجموعة روايات لتعلم الإنجليزي</h1>
+    <p class="subtitle">روايات بمستويات ومواضيع مختلفة، مع إمكانية الاستماع لكل رواية، وأهم الكلمات الموجودة فيها، عشان تطور لغتك وسرعة استيعابك 🙌</p>
+    <div class="level-filter">
+      <select id="levelSelect" aria-label="اختر مستوى">
+        <option value="all">كل المستويات</option>
+        <option value="beginner">مبتدئ</option>
+        <option value="intermediate">متوسط</option>
+        <option value="advanced">متقدم</option>
+      </select>
+    </div>
+  </div>
+</header>
+
+<main class="library">
+  <div class="book-grid" id="bookGrid"></div>
+</main>
+
+<footer class="site-footer">
+  <p><a href="about.html">القصة ورا المكتبة وتعليمات القراءة</a></p>
+  <p>مكتبة الروايات &mdash; صنعت بـ 💚 لتطوير لغتك الإنجليزية</p>
+</footer>
+
+<script src="js/main.js"></script>
+</body>
+</html>
