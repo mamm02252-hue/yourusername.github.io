@@ -3,45 +3,91 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>مكتبة الروايات | تعلم الإنجليزي بالقراءة</title>
-<meta name="description" content="مجموعة روايات بمستويات مختلفة تساعدك تطور لغتك الإنجليزية عن طريق القراءة، مع أهم الكلمات لكل رواية.">
+<title>ألعاب مجانية اونلاين</title>
+<meta name="description" content="العب ألعاب مجانية مباشرة من المتصفح بدون تحميل — تشتغل على الموبايل والكمبيوتر.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{background:#0B0D12;color:#E8EAF0;font-family:'Tajawal',system-ui,sans-serif;min-height:100%}
+  body{padding:0 16px}
+
+  header.hero{padding:56px 0 40px;text-align:center;max-width:720px;margin:0 auto}
+  .brand{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:18px}
+  .brand svg{width:34px;height:34px}
+  .brand-name{font-size:15px;font-weight:900;letter-spacing:.5px;color:#8B94A8}
+  h1{font-size:clamp(26px,6vw,40px);font-weight:900;line-height:1.25;margin-bottom:12px}
+  h1 em{font-style:normal;color:#FFC53E}
+  .subtitle{font-size:14px;line-height:1.9;color:#9BA3B8;max-width:520px;margin:0 auto}
+
+  main{max-width:960px;margin:0 auto;padding-bottom:60px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:18px}
+
+  .card{background:#12151C;border:1px solid rgba(255,255,255,.08);border-radius:18px;overflow:hidden;
+    display:flex;flex-direction:column;text-decoration:none;color:inherit;transition:.15s;position:relative}
+  .card:hover, .card:active{transform:translateY(-3px);border-color:rgba(255,255,255,.18)}
+  .card .thumb{aspect-ratio:16/10;display:flex;align-items:center;justify-content:center;
+    font-size:44px;position:relative;overflow:hidden}
+  .card .thumb::after{content:'';position:absolute;inset:0;
+    background:linear-gradient(180deg,rgba(0,0,0,0),rgba(0,0,0,.35))}
+  .card .body{padding:14px 16px 18px}
+  .card .nm{font-size:16px;font-weight:800;margin-bottom:4px}
+  .card .desc{font-size:12px;color:#8B94A8;line-height:1.7}
+  .card .tag{position:absolute;top:10px;left:10px;background:rgba(0,0,0,.55);backdrop-filter:blur(4px);
+    font-size:10px;font-weight:800;letter-spacing:.5px;padding:4px 10px;border-radius:20px;color:#FFC53E;z-index:1}
+
+  .card.soon{opacity:.45;pointer-events:none}
+  .card.soon .thumb{filter:grayscale(1)}
+
+  .adslot{margin:36px auto;max-width:960px;min-height:100px;border:1px dashed rgba(255,255,255,.15);
+    border-radius:14px;display:flex;align-items:center;justify-content:center;
+    font-size:11px;color:#4A5266;letter-spacing:.5px}
+
+  footer{text-align:center;padding:30px 0 40px;font-size:12px;color:#5A6272}
+  footer a{color:#8B94A8}
+</style>
 </head>
 <body>
 
 <header class="hero">
-  <div class="hero-inner">
-    <div class="brand">
-      <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M24 4L44 22H38V42H10V22H4L24 4Z" fill="#fff"/>
-        <rect x="16" y="26" width="16" height="16" fill="#12a894"/>
-      </svg>
-      <span class="brand-name">مكتبة <strong>الروايات</strong></span>
-    </div>
-    <h1>مجموعة روايات لتعلم الإنجليزي</h1>
-    <p class="subtitle">روايات بمستويات ومواضيع مختلفة، مع إمكانية الاستماع لكل رواية، وأهم الكلمات الموجودة فيها، عشان تطور لغتك وسرعة استيعابك 🙌</p>
-    <div class="level-filter">
-      <select id="levelSelect" aria-label="اختر مستوى">
-        <option value="all">كل المستويات</option>
-        <option value="beginner">مبتدئ</option>
-        <option value="intermediate">متوسط</option>
-        <option value="advanced">متقدم</option>
-      </select>
-    </div>
+  <div class="brand">
+    <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M24 4L44 22H38V42H10V22H4L24 4Z" fill="#FFC53E"/>
+      <rect x="16" y="26" width="16" height="16" fill="#0B0D12"/>
+    </svg>
+    <span class="brand-name">ألعاب اونلاين</span>
   </div>
+  <h1>العب ألعاب <em>مجانية</em> مباشرة من المتصفح</h1>
+  <p class="subtitle">بدون تحميل، بدون تسجيل — افتح اللعبة والعب فوراً من الموبايل أو الكمبيوتر.</p>
 </header>
 
-<main class="library">
-  <div class="book-grid" id="bookGrid"></div>
+<main>
+  <div class="grid" id="gameGrid">
+    <a class="card" href="fakh/">
+      <span class="tag">جديد</span>
+      <div class="thumb" style="background:linear-gradient(135deg,#3A2413,#8A5A2E)">🪤</div>
+      <div class="body">
+        <div class="nm">فخ — FAKH</div>
+        <div class="desc">لعبة منصات (Platformer) عبر 10 عوالم مختلفة، فخاخ وألغاز وصعوبة تتصاعد تدريجياً.</div>
+      </div>
+    </a>
+
+    <div class="card soon">
+      <div class="thumb" style="background:linear-gradient(135deg,#1B2540,#4E6FA8)">🎮</div>
+      <div class="body">
+        <div class="nm">قريباً</div>
+        <div class="desc">لعبة جديدة راح تنضاف هنا قريباً.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- مكان إعلان AdSense — يستبدل هذا الـdiv بكود الإعلان بعد الموافقة -->
+  <div class="adslot" id="ad-slot-1">مساحة إعلان</div>
 </main>
 
-<footer class="site-footer">
-  <p><a href="about.html">القصة ورا المكتبة وتعليمات القراءة</a></p>
-  <p>مكتبة الروايات &mdash; صنعت بـ 💚 لتطوير لغتك الإنجليزية</p>
+<footer>
+  <p>ألعاب اونلاين — موقع ألعاب مجاني 🎮</p>
 </footer>
 
-<script src="js/main.js"></script>
 </body>
 </html>
