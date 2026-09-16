@@ -324,16 +324,30 @@ const SFX = {
 const IN = { l:false, r:false, u:false };
 const $ = id => document.getElementById(id);
 
+/* أزرار اللمس: Pointer Events بدل touchstart/mousedown المنفصلة — تدمج
+   اللمس والماوس بحدث واحد موثوق وتمنع "الأزرار الشبح" (ghost clicks) بعد
+   الرفع، وهي السبب الشائع لعمل زر القفز/الحركة بشكل متقطع على الهاتف. */
 function bindHold(el, key){
   if(!el) return;
-  const on = e => { e.preventDefault(); IN[key] = true;  el.classList.add('down');  ac(); };
-  const off= e => { if(e.cancelable) e.preventDefault(); IN[key] = false; el.classList.remove('down'); };
-  el.addEventListener('touchstart', on,  {passive:false});
-  el.addEventListener('touchend',   off, {passive:false});
-  el.addEventListener('touchcancel',off, {passive:false});
-  el.addEventListener('mousedown',  on,  {passive:false});
-  el.addEventListener('mouseup',    off, {passive:false});
-  el.addEventListener('mouseleave', off, {passive:false});
+  let pid = null;
+  const on = e => {
+    e.preventDefault();
+    if(pid !== null) return;           // تجاهل إصبع إضافي على نفس الزر
+    pid = e.pointerId;
+    try{ el.setPointerCapture(pid); }catch(_){}
+    IN[key] = true; el.classList.add('down'); ac();
+  };
+  const off = e => {
+    if(pid !== null && e.pointerId !== pid) return;
+    if(e.cancelable) e.preventDefault();
+    pid = null;
+    IN[key] = false; el.classList.remove('down');
+  };
+  el.addEventListener('pointerdown',   on,  {passive:false});
+  el.addEventListener('pointerup',     off, {passive:false});
+  el.addEventListener('pointercancel', off, {passive:false});
+  el.addEventListener('lostpointercapture', off, {passive:false});
+  el.addEventListener('contextmenu', e => e.preventDefault());
 }
 bindHold($('kL'),'l'); bindHold($('kR'),'r'); bindHold($('kU'),'u');
 
