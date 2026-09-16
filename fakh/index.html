@@ -237,16 +237,16 @@ const COYOTE = 0.10, BUFFER = 0.13;
 const PER_WORLD = 1, WORLDS = 10, TOTAL = PER_WORLD * WORLDS; // كل عالم = مرحلة طويلة واحدة متصلة
 
 const THEMES = [
-  {nm:'الصحراء',      sky1:'#3A2413', sky2:'#8A5A2E', gr:'#C99A54', gr2:'#DCB874', hz:'#FF6B1A', ac:'#2FB8B0', ln:'#8C6534'},
-  {nm:'الماء',        sky1:'#031C2E', sky2:'#0D4A66', gr:'#0F6E7C', gr2:'#149091', hz:'#FF6EC7', ac:'#7FE7D6', ln:'#0A3548'},
-  {nm:'الفضاء',       sky1:'#05040F', sky2:'#170B2E', gr:'#2A2050', gr2:'#3B2C6E', hz:'#FF3E7A', ac:'#7C9CFF', ln:'#1B1440'},
-  {nm:'التطوّر',       sky1:'#071615', sky2:'#0E2B29', gr:'#144744', gr2:'#1B615C', hz:'#FF3E3E', ac:'#4ADE80', ln:'#0F2E2B'},
-  {nm:'العصر القديم', sky1:'#1B140C', sky2:'#302113', gr:'#5C4426', gr2:'#75592F', hz:'#FF3E3E', ac:'#E8C15E', ln:'#3A2A15'},
-  {nm:'المدينة',      sky1:'#0A0A14', sky2:'#1B1330', gr:'#3A2B55', gr2:'#4C3872', hz:'#FF1A5E', ac:'#5BC0EB', ln:'#241A3E'},
-  {nm:'الخريف',       sky1:'#241105', sky2:'#4A230C', gr:'#7A3B18', gr2:'#96501F', hz:'#FF3E3E', ac:'#FFC53E', ln:'#502A10'},
-  {nm:'الرعب',        sky1:'#08050A', sky2:'#160A14', gr:'#241220', gr2:'#341A2E', hz:'#FF1A3E', ac:'#7ED957', ln:'#1B0E18'},
-  {nm:'الحماس',       sky1:'#2A0505', sky2:'#5A0F0F', gr:'#8A1E1E', gr2:'#B02A2A', hz:'#FFC53E', ac:'#FF8A00', ln:'#600E0E'},
-  {nm:'الجنّة',        sky1:'#1B2540', sky2:'#4E6FA8', gr:'#DCE6F5', gr2:'#F0F4FC', hz:'#FF6EC7', ac:'#FFD84A', ln:'#B9C9E8'}
+  {nm:'الصحراء',      sky1:'#3A2413', sky2:'#8A5A2E', gr:'#C99A54', gr2:'#DCB874', hz:'#FF6B1A', ac:'#2FB8B0', ln:'#8C6534', deco:'sun'},
+  {nm:'الماء',        sky1:'#031C2E', sky2:'#0D4A66', gr:'#0F6E7C', gr2:'#149091', hz:'#FF6EC7', ac:'#7FE7D6', ln:'#0A3548', deco:'bubbles'},
+  {nm:'الفضاء',       sky1:'#05040F', sky2:'#170B2E', gr:'#2A2050', gr2:'#3B2C6E', hz:'#FF3E7A', ac:'#7C9CFF', ln:'#1B1440', deco:'stars'},
+  {nm:'التطوّر',       sky1:'#071615', sky2:'#0E2B29', gr:'#144744', gr2:'#1B615C', hz:'#FF3E3E', ac:'#4ADE80', ln:'#0F2E2B', deco:'leaves'},
+  {nm:'العصر القديم', sky1:'#1B140C', sky2:'#302113', gr:'#5C4426', gr2:'#75592F', hz:'#FF3E3E', ac:'#E8C15E', ln:'#3A2A15', deco:'pillars'},
+  {nm:'المدينة',      sky1:'#0A0A14', sky2:'#1B1330', gr:'#3A2B55', gr2:'#4C3872', hz:'#FF1A5E', ac:'#5BC0EB', ln:'#241A3E', deco:'skyline'},
+  {nm:'النار',        sky1:'#1A0503', sky2:'#4A1004', gr:'#2B1210', gr2:'#4A231D', hz:'#FF7A1A', ac:'#FFD23E', ln:'#3A1008', deco:'volcano'},
+  {nm:'الخريف',       sky1:'#241105', sky2:'#4A230C', gr:'#7A3B18', gr2:'#96501F', hz:'#FF3E3E', ac:'#FFC53E', ln:'#502A10', deco:'leaves'},
+  {nm:'الرعب',        sky1:'#08050A', sky2:'#160A14', gr:'#241220', gr2:'#341A2E', hz:'#FF1A3E', ac:'#7ED957', ln:'#1B0E18', deco:'none'},
+  {nm:'الجنّة',        sky1:'#1B2540', sky2:'#4E6FA8', gr:'#DCE6F5', gr2:'#F0F4FC', hz:'#FF6EC7', ac:'#FFD84A', ln:'#B9C9E8', deco:'clouds'}
 ];
 
 /* ---------- 2. SAVE ---------- */
@@ -358,6 +358,12 @@ const crumble = (x,y,w,h,fuse)   => ({type:'crumble', x, y, w, h:h||16, fuse:fus
 const blink   = (x,y,w,h,per,off,onFrac) => ({type:'blink', x, y, w, h:h||16, per:per||1.6, off:off||0, onFrac:onFrac||.55, on:true});
 const invert  = (x,y,w,h)        => ({type:'invert', x, y, w, h});
 const wind    = (x,y,w,h,force)  => ({type:'wind', x, y, w, h, force});
+/* منطقة إظلام دوري (عالم الرعب) — بصرية بحتة: لا صلابة ولا أذى مباشر منها،
+   اللاعب يرى الخطر الحقيقي (شوك/فخ) قبل أن تنطفئ الإضاءة فوقه بحسب التصميم */
+const darkzone = (x,y,w,h,per,darkFrac,off) => ({type:'darkzone', x, y, w, h, per:per||3, darkFrac:darkFrac||.35, off:off||0, dark:false});
+/* منطقة جاذبية (عالم الفضاء): mult يضرب GRAV طالما اللاعب داخلها — .5 جاذبية
+   خفيفة، 1 طبيعية، سالبة = جاذبية معكوسة (تسحب لأعلى) */
+const gravityzone = (x,y,w,h,mult) => ({type:'gravityzone', x, y, w, h, mult});
 const SP    = {x:56, y:GY-PH};
 const DR    = {x:VW-100, y:GY-DH};
 
@@ -379,7 +385,8 @@ function createLevel(o){
     gates:   o.gates   || [],
     buttons: o.buttons || [],
     ports:   o.ports   || [],
-    len:     o.len     || VW   // طول العالم بالبكسل؛ VW = عالم بلا كاميرا متحركة (توافقية)
+    len:     o.len     || VW,  // طول العالم بالبكسل؛ VW = عالم بلا كاميرا متحركة (توافقية)
+    checkpoints: o.checkpoints || []
   };
 }
 const lvl = createLevel; // legacy alias used throughout the archetype table (A.*) below
@@ -646,8 +653,9 @@ function generateArchetypeLevel(i){
 function buildWorld(segFns, opts){
   let x = 0;
   const L = { blocks:[], spikes:[], traps:[], buttons:[], gates:[], key:null, ports:[] };
-  for(const fn of segFns){
-    const s = fn(x);
+  const checkpoints = [];
+  for(let i=0;i<segFns.length;i++){
+    const s = segFns[i](x);
     if(s.blocks)  L.blocks.push(...s.blocks);
     if(s.spikes)  L.spikes.push(...s.spikes);
     if(s.traps)   L.traps.push(...s.traps);
@@ -655,12 +663,16 @@ function buildWorld(segFns, opts){
     if(s.gates)   L.gates.push(...s.gates);
     if(s.key && !L.key) L.key = s.key;
     if(s.ports)   L.ports.push(...s.ports);
+    // نقطة تفتيش عند بداية كل مقطع تحدٍّ (تخطّى مقطع البداية التعليمي ومقطع
+    // النهاية المسطّح) — تبعد الموت عن إعادتك لبداية العالم بالكامل
+    if(i >= 1 && i <= segFns.length - 2) checkpoints.push({ x: x + 20, y: GY - PH });
     x += s.w;
   }
   return createLevel(Object.assign({
     nm: opts.nm, hint: opts.hint,
     blocks: L.blocks, spikes: L.spikes, traps: L.traps,
     buttons: L.buttons, gates: L.gates, key: L.key, ports: L.ports,
+    checkpoints,
     spawn: {x:56, y:GY-PH}, door:{x: x - 150, y:GY-DH}, len: x
   }, opts.overrides || {}));
 }
@@ -746,6 +758,54 @@ const SEG = {
 
   keyAlcove: (w) => (x0) => ({ w, blocks:[grd(x0, w), bar(x0 + w*.45, GY-140, 120)],
     key:{x:x0 + w*.45 + 50, y:GY-176, w:20, h:22, got:false} }),
+
+  // --- مقاطع مخصّصة لعالم النار: حمم صاعدة، صخور ساقطة (بإنذار ظل مسبق)، نفث نار (بإنذار توهّج) ---
+  risingHazard: (w, speed) => (x0) => ({ w, blocks:[grd(x0, 40), grd(x0+w-40, 40)],
+    traps:[{type:'rise', x:x0+40, y:GY, w:w-80, h:34, cur:GY, top:GY-34, trig:x0+30, sp:speed||150, on:false}] }),
+
+  fallingRocks: (w, count) => (x0) => {
+    const t = [], span = w / (count+1);
+    for(let i=0;i<count;i++){
+      const rx = x0 + span*(i+1) - 38;
+      t.push({type:'drop', x:rx, y:0, w:76, h:130, cur:0, dest:GY-130-40, trig:rx-40, warnTrig:rx-190, sp:520, on:false});
+    }
+    return { w, blocks:[grd(x0, w)], traps:t };
+  },
+
+  fireJets: (w, count) => (x0) => {
+    const t = [], span = w / (count+1);
+    for(let i=0;i<count;i++){
+      const lx = x0 + span*(i+1);
+      t.push({type:'laser', x:lx, y:GY-140, w:14, h:140, per:1.9, off:i*.5, on:true, warnDur:.35});
+    }
+    return { w, blocks:[grd(x0, w)], traps:t };
+  },
+
+  // --- مقطع مخصّص لعالم الرعب: الإضاءة تُطفأ دورياً، لكن الشوك ثابت ومرئي دوماً قبل الإظلام ---
+  darkPassage: (w, count) => (x0) => {
+    const t = [darkzone(x0, GY-200, w, 200, 3.2, .32, 0)];
+    const s = [], span = w / (count+1);
+    for(let i=0;i<count;i++) s.push(spike(Math.round(x0 + span*(i+1)), GY-22, 22, 22));
+    return { w, blocks:[grd(x0, w)], spikes:s, traps:t };
+  },
+
+  // --- مقطع مخصّص لعالم الفضاء: منطقة جاذبية (خفيفة/معكوسة) فوق أرض متصلة ---
+  gravityZone: (w, mult) => (x0) => ({ w, blocks:[grd(x0, w)],
+    traps:[gravityzone(x0, 0, w, VH, mult)] }),
+
+  // غرفة جاذبية معكوسة بسقف يحدّ الطفو — تمنع اللاعب من الخروج خارج الشاشة
+  reverseGravityRoom: (w) => (x0) => ({ w, blocks:[grd(x0, w), bar(x0, 130, w, 16)],
+    traps:[gravityzone(x0, 0, w, VH, -1)] }),
+
+  // زرّان يفتحان بوابة واحدة معاً (كلاهما لازمان) — لغز العصر القديم
+  twoButtonGate: (w, idA, idB) => (x0) => ({ w, blocks:[grd(x0, w)],
+    buttons:[{x:x0+80, y:GY-16, w:64, h:16, id:idA, on:false},
+             {x:x0+w*.55, y:GY-16, w:64, h:16, id:idB, on:false}],
+    gates:[{x:x0+w-140, y:GY-140, w:26, h:140, id:idA+'+'+idB, open:false, a:0}] }),
+
+  // باب خادع منتصف الطريق (عالم الجنّة) — الباب الحقيقي دائماً في نهاية العالم
+  fakeDoorRoom: (w) => (x0) => ({ w, blocks:[grd(x0, w)],
+    traps:[{type:'fakedoor', x:x0 + w*.5 - 17, y:GY-DH, w:DW, h:DH, sprung:false}] }),
 };
 
 /* Handcrafted level overrides, keyed by 1-based level id (1..10). Every
@@ -753,55 +813,141 @@ const SEG = {
    is reached because every world id below is always populated. */
 const HANDCRAFTED = {};
 
+/* كل عالم: تعليم (مقطع1) → تطبيق (2-3 مقاطع) → دمج (2-3 مقاطع) → اختبار
+   نهائي (مقطع قبل الأخير) → نهاية آمنة (مقطع أخير مسطّح مع الباب). */
+
+// 1) الصحراء — تعليم أساسيات اللعبة: أشواك، فجوات، منصات متحركة، منصات هشة
 HANDCRAFTED[1] = buildWorld([
-  SEG.flat(300), SEG.spikes(500, 3, 180, 190), SEG.gap(140),
-  SEG.windGap(380, 190), SEG.saw(500, 2), SEG.flat(260)
-], { nm:'الصحراء', hint:'الريح تدفعك — استغلها لتعبر الهوة' });
+  SEG.flat(300),                          // بداية واسعة آمنة
+  SEG.spikes(420, 2, 220, 260),           // تعليم: شوك بمسافة سخية
+  SEG.gap(140),                           // تعليم: قفزة فوق فجوة
+  SEG.moverBridge(420),                   // تطبيق: فجوة + منصة متحركة
+  SEG.crumbleBridge(420, 3),              // تطبيق: منصة هشة (فخ واضح بعد أول لمسة)
+  SEG.buttonGate(460, 'd1'),              // لغز: زر يفتح بوابة
+  SEG.keyAlcove(420),                     // لغز: مفتاح خلف طريق صغير
+  SEG.gap(140), SEG.moverBridge(380), SEG.spikes(420, 2, 170, 220), // دمج نهائي
+  SEG.flat(280)                           // نهاية آمنة قبل الباب
+], { nm:'الصحراء', hint:'اقفز فوق الأشواك، واعبر الفجوات بالمنصات المتحركة' });
 
+// 2) الماء — تيارات تدفعك، منصات عائمة، مفتاح في مسار جانبي
 HANDCRAFTED[2] = buildWorld([
-  SEG.flat(260), SEG.gap(140), SEG.crumbleBridge(420, 4),
-  SEG.laser(480, 2), SEG.blinkBridge(420, 3), SEG.flat(260)
-], { nm:'الماء', hint:'المنصات الهشة تنكسر — لا تتوقف عليها' });
+  SEG.flat(280),
+  SEG.windGap(360, 150),                  // تعليم: تيار ضعيف يساعدك على العبور
+  SEG.gap(140),                           // تعليم: فجوة عادية
+  SEG.moverBridge(420),                   // تطبيق: منصة تتحرك مع الماء
+  SEG.windGap(420, 190),                  // تطبيق: تيار متوسط يغيّر توقيت القفزة
+  SEG.buttonGate(460, 'w1'),              // لغز: بوابة مائية
+  SEG.keyAlcove(420),                     // لغز: مفتاح في مسار جانبي
+  SEG.windGap(460, -170), SEG.moverBridge(380), SEG.spikes(400, 2, 170, 210), // دمج نهائي
+  SEG.flat(280)
+], { nm:'الماء', hint:'التيار يدفعك — استخدم اندفاعه لتصل أبعد' });
 
+// 3) الفضاء — جاذبية خفيفة ثم معكوسة، بوابات، مسارات خادعة
 HANDCRAFTED[3] = buildWorld([
-  SEG.flat(260), SEG.invertZone(480), SEG.gap(150),
-  SEG.moverBridge(420), SEG.saw(500, 3), SEG.flat(260)
-], { nm:'الفضاء', hint:'داخل المنطقة البنفسجية التحكم معكوس' });
+  SEG.flat(280),
+  SEG.gravityZone(360, .55),              // تعليم: جاذبية خفيفة (قفزة أطول)
+  SEG.gap(140),                           // تعليم: فجوة عادية بجاذبية طبيعية
+  SEG.moverBridge(420),                   // تطبيق: منصة متحركة
+  SEG.reverseGravityRoom(380),            // تطبيق: أول تجربة جاذبية معكوسة (بسقف آمن)
+  SEG.invertZone(480),                    // لغز: منطقة تحكم معكوس + شوك
+  SEG.buttonGate(460, 'sp1'),             // لغز: بوابة ضوئية
+  SEG.reverseGravityRoom(420), SEG.saw(480, 3),                    // دمج
+  SEG.moverBridge(380), SEG.laser(460, 2),                         // اختبار نهائي
+  SEG.flat(280)
+], { nm:'الفضاء', hint:'انتبه لاتجاه الجاذبية قبل أن تقفز' });
 
+// 4) التطوّر — منصات وامضة، فخاخ بتوقيت، تحكم معكوس، أنماط تُقرأ قبل التحرك
 HANDCRAFTED[4] = buildWorld([
-  SEG.flat(260), SEG.blinkBridge(400, 3), SEG.laser(500, 3),
-  SEG.buttonGate(480, 'e1'), SEG.crush(480, 2), SEG.flat(260)
-], { nm:'التطوّر', hint:'المنصات الوامضة صلبة فقط عند إضاءتها' });
+  SEG.flat(260),
+  SEG.blinkBridge(360, 3),                // تعليم: منصات وامضة ببطء
+  SEG.gap(140),
+  SEG.laser(460, 2),                      // تطبيق: فخ بتوقيت
+  SEG.invertZone(460),                    // تطبيق: تحكم معكوس
+  SEG.buttonGate(460, 'ev1'),             // لغز
+  SEG.blinkBridge(440, 4), SEG.laser(500, 3),                      // دمج
+  SEG.crush(480, 2),                                               // اختبار نهائي
+  SEG.flat(260)
+], { nm:'التطوّر', hint:'راقب نمط المنصة الوامضة قبل أن تخطو' });
 
+// 5) العصر القديم — أزرار، مفاتيح، أبواب مقفلة، مطارق سحق
 HANDCRAFTED[5] = buildWorld([
-  SEG.flat(260), SEG.stairs(520, 4), SEG.crumbleBridge(440, 4),
-  SEG.spikes(520, 4, 180, 180), SEG.keyAlcove(420), SEG.flat(260)
-], { nm:'العصر القديم', hint:'المفتاح يفتح الباب في نهاية المرحلة' });
+  SEG.flat(260),
+  SEG.buttonGate(380, 'an1'),             // تعليم: زر بسيط
+  SEG.stairs(480, 4),
+  SEG.twoButtonGate(460, 'a', 'b'),       // تطبيق: ترتيب أكثر من زر
+  SEG.keyAlcove(420),                     // تطبيق: مفتاح في طريق يحتاج حذر
+  SEG.spikes(420, 3, 170, 190),           // (الطريق نحو المفتاح محروس بالشوك)
+  SEG.crumbleBridge(440, 4), SEG.crush(480, 2),                    // دمج
+  SEG.stairs(460, 3), SEG.spikes(460, 3, 170, 190),                // اختبار نهائي
+  SEG.flat(280)
+], { nm:'العصر القديم', hint:'المفتاح يفتح الباب — احذر الطريق إليه' });
 
+// 6) المدينة — مصاعد، ليزر، مفاتيح كهربائية، منطقة تحكم معكوس صغيرة
 HANDCRAFTED[6] = buildWorld([
-  SEG.flat(260), SEG.buttonGate(460, 'c1'), SEG.moverBridge(440),
-  SEG.laser(500, 3), SEG.buttonGate(460, 'c2'), SEG.flat(260)
-], { nm:'المدينة', hint:'اضغط الزر لفتح البوابة أمامك' });
+  SEG.flat(260),
+  SEG.moverBridge(380),                   // تعليم: مصعد واحد
+  SEG.gap(140),
+  SEG.moverBridge(420),                   // تطبيق: مصعدان
+  SEG.laser(460, 2),                      // تطبيق: ليزر وحده
+  SEG.buttonGate(460, 'ct1'),             // لغز: مفتاح كهربائي
+  SEG.laser(480, 3), SEG.moverBridge(420),                         // دمج: ليزر + مصعد
+  SEG.invertZone(420),                                             // منطقة تحكم معكوس صغيرة
+  SEG.moverBridge(400), SEG.laser(460, 3),                         // اختبار نهائي: سطح المبنى
+  SEG.flat(280)
+], { nm:'المدينة', hint:'تنقّل بين المصاعد واحذر الليزر' });
 
+// 7) النار — حمم صاعدة، منصات تحترق، صخور ساقطة (بإنذار ظل)، نفث نار (بإنذار توهّج)
 HANDCRAFTED[7] = buildWorld([
-  SEG.flat(260), SEG.crumbleBridge(460, 5), SEG.saw(520, 3),
-  SEG.gap(150), SEG.crush(500, 3), SEG.flat(260)
-], { nm:'الخريف', hint:'الأرض الهشة تتساقط مثل أوراق الخريف' });
+  SEG.flat(260),
+  SEG.gap(140),                           // تعليم: حمم أسفل فقط (فجوة عادية)
+  SEG.risingHazard(360, 130),             // تعليم: حمم ترتفع ببطء
+  SEG.crumbleBridge(400, 3),              // تطبيق: منصات تحترق بعد الوقوف عليها
+  SEG.fallingRocks(440, 2),               // تطبيق: صخور ساقطة (ظل تحذير قبلها)
+  SEG.fireJets(460, 2),                   // تطبيق: نفث نار (توهّج قبل الإشعال)
+  SEG.buttonGate(420, 'fr1'),             // لغز: بوابة تفتح ممرّاً آمناً
+  SEG.risingHazard(400, 170), SEG.fallingRocks(440, 3),            // دمج
+  SEG.crumbleBridge(420, 4), SEG.fireJets(500, 3),                 // اختبار نهائي
+  SEG.flat(280)
+], { nm:'النار', hint:'الحمم ترتفع، والنار تُحذّرك قبل أن تنفجر' });
 
+// 8) الخريف — منصات وامضة بنمط ثابت، أرض كاذبة، مسارات مخفية
 HANDCRAFTED[8] = buildWorld([
-  SEG.flat(240), SEG.invertZone(520), SEG.blinkBridge(460, 4),
-  SEG.spikes(560, 5, 170, 170), SEG.laser(560, 4), SEG.flat(260)
-], { nm:'الرعب', hint:'كل شيء هنا يخدعك — تحكم بحذر' });
+  SEG.flat(260),
+  SEG.blinkBridge(360, 3),                // تعليم: منصة وامضة بنمط ثابت
+  SEG.gap(140),
+  SEG.blinkBridge(420, 4),                // تطبيق: منصات أكثر
+  SEG.crumbleBridge(420, 3),              // تطبيق: أرض كاذبة
+  SEG.buttonGate(440, 'au1'),             // لغز
+  SEG.blinkBridge(460, 5), SEG.moverBridge(400),                   // دمج
+  SEG.blinkBridge(480, 5), SEG.crumbleBridge(440, 4),              // اختبار نهائي
+  SEG.flat(280)
+], { nm:'الخريف', hint:'راقب نمط ظهور المنصة قبل أن تخطو — ليس عشوائياً' });
 
+// 9) الرعب — ظلام مؤقت لكن عادل، أبواب خادعة، تحكم معكوس، أخطار متحركة
 HANDCRAFTED[9] = buildWorld([
-  SEG.flat(240), SEG.saw(560, 4), SEG.crush(560, 4),
-  SEG.windGap(460, -220), SEG.crumbleBridge(460, 5), SEG.laser(600, 4), SEG.flat(260)
-], { nm:'الحماس', hint:'الريح هنا تقاومك — خذ اندفاعاً قبل القفز' });
+  SEG.flat(240),
+  SEG.darkPassage(400, 2),                // تعليم: ظلام مؤقت والشوك مرئي دوماً قبل الانطفاء
+  SEG.invertZone(440),                    // تعليم: تحكم معكوس وحده
+  SEG.blinkBridge(420, 3),                // تطبيق: منصة مخفية بالظلام
+  SEG.darkPassage(460, 3),                // تطبيق: ممر أطول وأحلك
+  SEG.saw(480, 3), SEG.darkPassage(480, 3),                        // دمج: خطر متحرك + ظلام
+  SEG.invertZone(460), SEG.darkPassage(500, 3),                    // اختبار نهائي
+  SEG.flat(280)
+], { nm:'الرعب', hint:'الإضاءة تُطفأ مؤقتاً — تذكّر ما رأيته قبل ذلك' });
 
+// 10) الجنّة — مظهر جميل وسهل ظاهرياً، لكنه أصعب عالم فعلياً
 HANDCRAFTED[10] = buildWorld([
-  SEG.flat(300), SEG.moverBridge(460), SEG.blinkBridge(440, 3),
-  SEG.spikes(480, 3, 200, 200), SEG.saw(460, 2), SEG.flat(320)
-], { nm:'الجنّة', hint:'الخاتمة — استمتع بالمشهد قبل الوصول' });
+  SEG.flat(320),                          // بداية تبدو سهلة جداً
+  SEG.gap(140),
+  SEG.fakeDoorRoom(380),                  // تطبيق: باب خادع منتصف الطريق
+  SEG.crumbleBridge(420, 3),              // تطبيق: سحابة مزيفة (منصة هشة)
+  SEG.invertZone(460),                    // تطبيق: تحكم معكوس
+  SEG.moverBridge(420),                   // تطبيق: منصة متحركة
+  SEG.buttonGate(440, 'pa1'),             // لغز
+  SEG.blinkBridge(440, 4), SEG.saw(460, 2),                        // دمج
+  SEG.crumbleBridge(440, 4), SEG.invertZone(420), SEG.spikes(440, 3, 180, 190), // اختبار الجنّة الأخير
+  SEG.flat(320)
+], { nm:'الجنّة', hint:'الجمال هنا خدّاع — كل تفصيل محسوب بدقة' });
 
 const LEVELS = [];
 for(let i=0;i<TOTAL;i++){
@@ -818,22 +964,27 @@ const fxc = $('fx'),  fx = fxc.getContext('2d');
 
 const S = {
   mode:'menu', idx:0, L:null, t:0, shake:0, flash:0,
-  dieCount:0, parts:[], won:0, fade:0, hasKey:false, camX:0
+  dieCount:0, parts:[], won:0, fade:0, hasKey:false, camX:0, cpPassed:0
 };
 const P = { x:0, y:0, vx:0, vy:0, gnd:false, face:1, walk:0, coy:0, buf:0,
             dead:false, sq:1, st:1, ride:null, stepT:0, cut:false };
+let CP = null; // آخر نقطة تفتيش (checkpoint) تجاوزها اللاعب في الجولة الحالية
 
 function hit(ax,ay,aw,ah, bx,by,bw,bh){
   return ax < bx+bw && ax+aw > bx && ay < by+bh && ay+ah > by;
 }
 function clone(o){ return JSON.parse(JSON.stringify(o)); }
 
-function load(i){
+/* fromCheckpoint=true (الموت وإعادة المحاولة): يعيد اللاعب لآخر Checkpoint
+   بدل بداية العالم؛ يعاد ضبط كل الفخاخ/الأزرار كالعادة لتفادي القفل.
+   fromCheckpoint=false (لعب عالم من القائمة): يبدأ من نقطة البداية دائماً. */
+function load(i, fromCheckpoint){
   S.idx = i;
   S.L = clone(LEVELS[i]);
   if(!S.L.len) S.L.len = VW;              // عالم قصير (توافقية) بلا كاميرا متحركة
-  S.t = 0; S.won = 0; S.fade = 0; S.hasKey = false; S.parts = [];
-  P.x = S.L.spawn.x; P.y = S.L.spawn.y;
+  S.t = 0; S.won = 0; S.fade = 0; S.hasKey = false; S.parts = []; S.cpPassed = 0;
+  if(!fromCheckpoint || !CP) CP = { x:S.L.spawn.x, y:S.L.spawn.y };
+  P.x = CP.x; P.y = CP.y;
   P.vx = P.vy = 0; P.gnd = false; P.dead = false; P.face = 1;
   P.walk = 0; P.coy = 0; P.buf = 0; P.sq = 1; P.st = 1; P.ride = null; P.cut = false;
   S.camX = Math.max(0, Math.min(S.L.len - VW, P.x + PW/2 - VW/2));
@@ -913,6 +1064,8 @@ function stepTraps(dt){
         if(t.on) t.cur = Math.max(t.top, t.cur - t.sp*dt);
         break;
       case 'drop':
+        // إنذار مسبق اختياري (warnTrig): يظهر ظل التحذير قبل السقوط الفعلي بمسافة أمان
+        t.warn = !t.on && px > (t.warnTrig !== undefined ? t.warnTrig : t.trig);
         if(!t.on && px > t.trig){ t.on = true; SFX.slam(); buzz(30); }
         if(t.on && t.cur < t.dest){
           t.cur = Math.min(t.dest, t.cur + t.sp*dt);
@@ -944,7 +1097,13 @@ function stepTraps(dt){
         const p = (S.t + t.off) % t.per;
         const was = t.on;
         t.on = p < t.per * .55;
+        t.warn = !t.on && p > t.per - (t.warnDur || 0);  // إنذار خافت قبل الإشعال مباشرة
         if(t.on && !was) SFX.trap();
+        break;
+      }
+      case 'darkzone': {
+        const p = (S.t + t.off) % t.per;
+        t.dark = p < t.per * (t.darkFrac || .35);
         break;
       }
       case 'spin':
@@ -1011,7 +1170,10 @@ function stepPlayer(dt){
     }
   }
 
-  P.vy = Math.min(P.vy + GRAV*dt, MAXFALL);
+  let gmul = 1;
+  for(const t of S.L.traps)
+    if(t.type === 'gravityzone' && hit(P.x, P.y, PW, PH, t.x, t.y, t.w, t.h)){ gmul = t.mult; break; }
+  P.vy = Math.max(-MAXFALL, Math.min(P.vy + GRAV*gmul*dt, MAXFALL));
   P.coy = P.gnd ? COYOTE : P.coy - dt;
   P.buf = IN.u ? BUFFER : P.buf - dt;
 
@@ -1070,6 +1232,14 @@ function stepPlayer(dt){
 
   P.sq += (1 - P.sq) * Math.min(1, dt * 11);
   P.st += (1 - P.st) * Math.min(1, dt * 11);
+
+  if(S.L.checkpoints && P.gnd){
+    while(S.cpPassed < S.L.checkpoints.length && P.x > S.L.checkpoints[S.cpPassed].x){
+      CP = { x:S.L.checkpoints[S.cpPassed].x, y:S.L.checkpoints[S.cpPassed].y };
+      S.cpPassed++;
+      showToast('✓ نقطة تفتيش');
+    }
+  }
 
   if(P.y > VH + 60){ kill(); return; }
 
@@ -1258,6 +1428,83 @@ function hero(g){
   g.restore();
 }
 
+/* خلفية زخرفية خفيفة لكل عالم — طبقة بعيدة ثابتة نسبياً (parallax بسيط)
+   تُرسم قبل ترجمة الكاميرا فتمنح كل عالم هوية بصرية فورية بدون ثقل أداء */
+function drawDeco(g, T, camX){
+  const p = camX * .12;   // إزاحة بعيدة جداً — إحساس بعمق دون رسم مضاعف
+  switch(T.deco){
+    case 'sun':
+      g.fillStyle = 'rgba(255,214,140,.9)';
+      g.beginPath(); g.arc(VW*.78 - p*.2, 110, 46, 0, Math.PI*2); g.fill();
+      g.strokeStyle = 'rgba(255,214,140,.25)'; g.lineWidth = 2;
+      for(let x=40;x<VW;x+=170){ const dx=(x-p)%(VW+170); g.beginPath();
+        g.moveTo(dx,VH); g.quadraticCurveTo(dx+40,VH-70,dx+90,VH-30); g.stroke(); }
+      break;
+    case 'stars':
+      g.fillStyle = 'rgba(255,255,255,.75)';
+      for(let i=0;i<50;i++){
+        const sx = ((i*173 - p) % (VW+60) + VW+60) % (VW+60) - 30;
+        const sy = (i*97) % (VH*.7);
+        g.fillRect(sx, sy, 2, 2);
+      }
+      break;
+    case 'bubbles':
+      g.strokeStyle = 'rgba(255,255,255,.22)'; g.lineWidth = 2;
+      for(let i=0;i<14;i++){
+        const bx = ((i*221 - p*.6) % (VW+80) + VW+80) % (VW+80) - 40;
+        const by = VH - ((i*61 + p*.1) % VH);
+        g.beginPath(); g.arc(bx, by, 5 + (i%3)*3, 0, Math.PI*2); g.stroke();
+      }
+      break;
+    case 'leaves':
+      g.fillStyle = T.ac; g.globalAlpha = .35;
+      for(let i=0;i<16;i++){
+        const lx = ((i*233 - p*.5) % (VW+60) + VW+60) % (VW+60) - 30;
+        const ly = ((i*89 + p*.05) % (VH*.65));
+        g.beginPath(); g.ellipse(lx, ly, 6, 3, i, 0, Math.PI*2); g.fill();
+      }
+      g.globalAlpha = 1;
+      break;
+    case 'pillars':
+      g.fillStyle = 'rgba(0,0,0,.18)';
+      for(let x=60;x<VW;x+=220){ const dx=((x-p*.4)%(VW+220)+VW+220)%(VW+220);
+        g.fillRect(dx, VH*.3, 26, VH*.55); }
+      break;
+    case 'skyline':
+      g.fillStyle = 'rgba(0,0,0,.28)';
+      for(let i=0;i<10;i++){
+        const bw = 70 + (i%3)*30, bh = 90 + (i%4)*55;
+        const bx = ((i*160 - p*.5) % (VW+160) + VW+160) % (VW+160) - 80;
+        g.fillRect(bx, VH*.42 - bh*.4, bw, bh);
+      }
+      g.fillStyle = 'rgba(91,192,235,.35)';
+      for(let i=0;i<24;i++){
+        const wx = ((i*67 - p*.5) % (VW+40) + VW+40) % (VW+40) - 20;
+        const wy = VH*.28 + (i*37 % 90);
+        g.fillRect(wx, wy, 3, 3);
+      }
+      break;
+    case 'volcano':
+      g.fillStyle = 'rgba(0,0,0,.35)';
+      g.beginPath(); g.moveTo(VW*.5-160,VH*.55); g.lineTo(VW*.5,VH*.18); g.lineTo(VW*.5+160,VH*.55); g.closePath(); g.fill();
+      g.fillStyle = 'rgba(255,122,26,.55)';
+      g.beginPath(); g.ellipse(VW*.5, VH*.19 + Math.sin(S.t*2)*3, 16, 8, 0, 0, Math.PI*2); g.fill();
+      break;
+    case 'clouds':
+      g.fillStyle = 'rgba(255,255,255,.55)';
+      for(let i=0;i<7;i++){
+        const cx0 = ((i*260 - p*.4) % (VW+220) + VW+220) % (VW+220) - 110;
+        const cy0 = 70 + (i%3)*55;
+        g.beginPath();
+        g.ellipse(cx0, cy0, 46, 18, 0, 0, Math.PI*2);
+        g.ellipse(cx0+34, cy0+6, 34, 14, 0, 0, Math.PI*2);
+        g.ellipse(cx0-30, cy0+8, 30, 13, 0, 0, Math.PI*2);
+        g.fill();
+      }
+      break;
+  }
+}
+
 function draw(){
   const T = THEMES[S.L.world] || THEMES[0];
   cx.setTransform(1,0,0,1,0,0);
@@ -1270,6 +1517,8 @@ function draw(){
   const g = cx.createLinearGradient(0, 0, 0, VH);
   g.addColorStop(0, T.sky1); g.addColorStop(1, T.sky2);
   cx.fillStyle = g; cx.fillRect(0, 0, VW, VH);
+
+  drawDeco(cx, T, S.camX);
 
   cx.strokeStyle = T.ln; cx.lineWidth = 1;
   const gridOff = -(S.camX * .3) % 48;                 // شبكة خلفية بمنظور بعيد (parallax خفيف)
@@ -1308,6 +1557,12 @@ function draw(){
         cx.fillRect(t.x + 8, t.y + 4 + (t.fire > 0 ? 5 : 0), t.w - 16, 2);
         break;
       case 'drop':
+        if(t.warn){
+          const wp = Math.abs(Math.sin(S.t * 8)) * .5 + .3;   // ظل تحذير نابض قبل السقوط
+          cx.globalAlpha = wp; cx.fillStyle = '#000';
+          cx.beginPath(); cx.ellipse(t.x + t.w/2, GY + 4, t.w*.42, 7, 0, 0, Math.PI*2); cx.fill();
+          cx.globalAlpha = 1;
+        }
         if(!t.on && t.cur === 0) break;
         slab(cx, t.x, t.cur, t.w, t.h, T.gr2, 'rgba(255,255,255,.12)');
         tri(cx, t.x, t.cur + t.h, t.w, 13, 'down', T.hz);
@@ -1322,7 +1577,7 @@ function draw(){
         break;
       case 'laser':
         if(!t.on){
-          cx.fillStyle = 'rgba(255,62,62,.16)';
+          cx.fillStyle = t.warn ? 'rgba(255,140,62,.5)' : 'rgba(255,62,62,.16)';
           cx.fillRect(t.x + 5, t.y, 4, t.h);
         } else {
           cx.fillStyle = T.hz; cx.fillRect(t.x + 3, t.y, t.w - 6, t.h);
@@ -1396,6 +1651,23 @@ function draw(){
         }
         break;
       }
+      case 'gravityzone': {
+        const rev = t.mult < 0;
+        cx.fillStyle = rev ? 'rgba(255,62,126,.06)' : 'rgba(124,156,255,.06)';
+        cx.fillRect(t.x, t.y, t.w, t.h);
+        cx.strokeStyle = rev ? 'rgba(255,62,126,.4)' : 'rgba(124,156,255,.4)';
+        cx.lineWidth = 2;
+        const n = Math.max(1, Math.round(t.w / 90));
+        for(let i=0;i<n;i++){
+          const ax = t.x + t.w*(i+.5)/n;
+          const ay = ((S.t * 60 * (rev ? -1 : 1)) % 90 + 90) % 90;
+          cx.beginPath();
+          if(rev){ cx.moveTo(ax, VH-30-ay); cx.lineTo(ax-6, VH-16-ay); cx.moveTo(ax, VH-30-ay); cx.lineTo(ax+6, VH-16-ay); }
+          else   { cx.moveTo(ax, 30+ay); cx.lineTo(ax-6, 16+ay); cx.moveTo(ax, 30+ay); cx.lineTo(ax+6, 16+ay); }
+          cx.stroke();
+        }
+        break;
+      }
     }
   }
 
@@ -1451,6 +1723,21 @@ function draw(){
   if(!P.dead) hero(cx);
   cx.restore();                                         // نهاية عالم الكاميرا — الباقي شاشة ثابتة
 
+  const activeDark = S.L.traps.find(t => t.type === 'darkzone' && t.dark &&
+    hit(P.x, P.y, PW, PH, t.x, t.y, t.w, t.h));
+  if(activeDark){
+    // اللاعب رأى الخطر قبل الانطفاء — الإظلام هنا بصري فقط، لا يضيف خطراً خفياً
+    const pxs = (P.x + PW/2 - S.camX) * SC + OX + sx, pys = (P.y + PH/2) * SC + OY + sy;
+    cx.save();
+    cx.fillStyle = 'rgba(3,2,5,.9)'; cx.fillRect(0, 0, cv.width, cv.height);
+    cx.globalCompositeOperation = 'destination-out';
+    const glow = cx.createRadialGradient(pxs, pys, 8*SC, pxs, pys, 115*SC);
+    glow.addColorStop(0, 'rgba(0,0,0,1)'); glow.addColorStop(1, 'rgba(0,0,0,0)');
+    cx.fillStyle = glow;
+    cx.beginPath(); cx.arc(pxs, pys, 115*SC, 0, Math.PI*2); cx.fill();
+    cx.restore();
+  }
+
   if(S.won){
     cx.globalAlpha = S.fade * .9;
     cx.fillStyle = '#05070A'; cx.fillRect(0, 0, VW, VH);
@@ -1505,8 +1792,8 @@ function syncHUD(){
   $('keyIcon').style.display = S.L.key ? 'inline' : 'none';
   $('keyIcon').classList.toggle('on', !!(S.L.key && S.L.key.got));
 }
-function start(i){ S.dieCount = 0; scr(null); load(i); ac(); }
-function restart(){ const i = S.idx; scr(null); load(i); }
+function start(i){ S.dieCount = 0; CP = null; scr(null); load(i, false); ac(); }
+function restart(){ const i = S.idx; scr(null); load(i, true); }
 function togglePause(){
   if(S.mode === 'play') scr('sPause');
   else if($('sPause').classList.contains('on')) scr(null);
