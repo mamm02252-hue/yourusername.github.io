@@ -8,67 +8,96 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
 <style>
+  :root{
+    --bg:#0A0B10; --surface:#13151C; --surface2:#1B1E28;
+    --line:rgba(255,255,255,.08); --line2:rgba(255,255,255,.16);
+    --text:#EDEFF5; --muted:#8B92A6; --muted2:#5B6178;
+    --accent:#7C6CFF; --accent-soft:rgba(124,108,255,.14);
+  }
   *{margin:0;padding:0;box-sizing:border-box}
-  html,body{background:#0B0D12;color:#E8EAF0;font-family:'Tajawal',system-ui,sans-serif;min-height:100%}
+  html,body{background:var(--bg);color:var(--text);font-family:'Tajawal',system-ui,sans-serif;min-height:100%}
   body{padding:0 16px}
+  a{color:inherit}
 
-  header.hero{padding:56px 0 40px;text-align:center;max-width:720px;margin:0 auto}
-  .brand{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:18px}
-  .brand svg{width:34px;height:34px}
-  .brand-name{font-size:15px;font-weight:900;letter-spacing:.5px;color:#8B94A8}
-  h1{font-size:clamp(26px,6vw,40px);font-weight:900;line-height:1.25;margin-bottom:12px}
-  h1 em{font-style:normal;color:#FFC53E}
-  .subtitle{font-size:14px;line-height:1.9;color:#9BA3B8;max-width:520px;margin:0 auto}
+  nav{max-width:1080px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;
+    padding:22px 0}
+  .brand{display:flex;align-items:center;gap:9px;font-weight:900;font-size:15px}
+  .brand svg{width:26px;height:26px}
+  .brand span{color:var(--muted)}
+  .brand b{color:var(--text)}
 
-  main{max-width:960px;margin:0 auto;padding-bottom:60px}
-  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:18px}
+  header.hero{padding:34px 0 44px;text-align:center;max-width:640px;margin:0 auto}
+  h1{font-size:clamp(26px,6vw,38px);font-weight:900;line-height:1.3;margin-bottom:12px}
+  h1 em{font-style:normal;color:var(--accent)}
+  .subtitle{font-size:14px;line-height:1.9;color:var(--muted);max-width:480px;margin:0 auto}
 
-  .card{background:#12151C;border:1px solid rgba(255,255,255,.08);border-radius:18px;overflow:hidden;
-    display:flex;flex-direction:column;text-decoration:none;color:inherit;transition:.15s;position:relative}
-  .card:hover, .card:active{transform:translateY(-3px);border-color:rgba(255,255,255,.18)}
+  main{max-width:1080px;margin:0 auto;padding-bottom:60px}
+  .section-label{font-size:12px;font-weight:800;letter-spacing:1px;color:var(--muted2);
+    text-transform:uppercase;margin:0 0 14px 2px}
+
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;margin-bottom:40px}
+
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:18px;overflow:hidden;
+    display:flex;flex-direction:column;text-decoration:none;color:inherit;transition:.18s ease;position:relative}
+  .card:hover, .card:active{transform:translateY(-3px);border-color:var(--line2);
+    box-shadow:0 12px 30px rgba(0,0,0,.35)}
   .card .thumb{aspect-ratio:16/10;display:flex;align-items:center;justify-content:center;
-    font-size:44px;position:relative;overflow:hidden}
+    font-size:46px;position:relative;overflow:hidden}
   .card .thumb::after{content:'';position:absolute;inset:0;
-    background:linear-gradient(180deg,rgba(0,0,0,0),rgba(0,0,0,.35))}
+    background:linear-gradient(180deg,rgba(0,0,0,0) 40%,rgba(0,0,0,.4))}
   .card .body{padding:14px 16px 18px}
   .card .nm{font-size:16px;font-weight:800;margin-bottom:4px}
-  .card .desc{font-size:12px;color:#8B94A8;line-height:1.7}
-  .card .tag{position:absolute;top:10px;left:10px;background:rgba(0,0,0,.55);backdrop-filter:blur(4px);
-    font-size:10px;font-weight:800;letter-spacing:.5px;padding:4px 10px;border-radius:20px;color:#FFC53E;z-index:1}
+  .card .desc{font-size:12px;color:var(--muted);line-height:1.7}
+  .card .tag{position:absolute;top:10px;right:10px;background:rgba(0,0,0,.55);backdrop-filter:blur(4px);
+    font-size:10px;font-weight:800;letter-spacing:.5px;padding:4px 10px;border-radius:20px;z-index:1}
+  .tag.new{color:#FFC53E}
+  .tag.puzzle{color:#7FE7FF}
 
-  .card.soon{opacity:.45;pointer-events:none}
+  .card.soon{opacity:.4;pointer-events:none}
   .card.soon .thumb{filter:grayscale(1)}
 
-  .adslot{margin:36px auto;max-width:960px;min-height:100px;border:1px dashed rgba(255,255,255,.15);
+  .adslot{margin:8px auto 40px;max-width:1080px;min-height:100px;border:1px dashed var(--line2);
     border-radius:14px;display:flex;align-items:center;justify-content:center;
-    font-size:11px;color:#4A5266;letter-spacing:.5px}
+    font-size:11px;color:var(--muted2);letter-spacing:.5px}
 
-  footer{text-align:center;padding:30px 0 40px;font-size:12px;color:#5A6272}
-  footer a{color:#8B94A8}
+  footer{text-align:center;padding:26px 0 40px;font-size:12px;color:var(--muted2)}
 </style>
 </head>
 <body>
 
-<header class="hero">
+<nav>
   <div class="brand">
     <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M24 4L44 22H38V42H10V22H4L24 4Z" fill="#FFC53E"/>
-      <rect x="16" y="26" width="16" height="16" fill="#0B0D12"/>
+      <path d="M24 4L44 22H38V42H10V22H4L24 4Z" fill="#7C6CFF"/>
+      <rect x="16" y="26" width="16" height="16" fill="#0A0B10"/>
     </svg>
-    <span class="brand-name">ألعاب اونلاين</span>
+    <span><b>ألعاب</b> اونلاين</span>
   </div>
+</nav>
+
+<header class="hero">
   <h1>العب ألعاب <em>مجانية</em> مباشرة من المتصفح</h1>
   <p class="subtitle">بدون تحميل، بدون تسجيل — افتح اللعبة والعب فوراً من الموبايل أو الكمبيوتر.</p>
 </header>
 
 <main>
+  <div class="section-label">الألعاب</div>
   <div class="grid" id="gameGrid">
     <a class="card" href="fakh/">
-      <span class="tag">جديد</span>
+      <span class="tag new">منصات</span>
       <div class="thumb" style="background:linear-gradient(135deg,#3A2413,#8A5A2E)">🪤</div>
       <div class="body">
         <div class="nm">فخ — FAKH</div>
         <div class="desc">لعبة منصات (Platformer) عبر 10 عوالم مختلفة، فخاخ وألغاز وصعوبة تتصاعد تدريجياً.</div>
+      </div>
+    </a>
+
+    <a class="card" href="mirror-move/">
+      <span class="tag puzzle">ألغاز</span>
+      <div class="thumb" style="background:linear-gradient(135deg,#0a0e27,#1a1f3a)">🪞</div>
+      <div class="body">
+        <div class="nm">Mirror Move</div>
+        <div class="desc">تحكم بشخصيتين متعاكستين بنفس الوقت — 100 مرحلة تزيد صعوبة، وهروب من وحوش تلاحقك.</div>
       </div>
     </a>
 
