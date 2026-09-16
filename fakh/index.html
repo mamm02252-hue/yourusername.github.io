@@ -351,7 +351,12 @@ const spike= (x,y,w,h,dir)       => ({x, y, w, h, dir:dir||'up'});
 const SP    = {x:56, y:GY-PH};
 const DR    = {x:884, y:GY-DH};
 
-function lvl(o){
+/* createLevel: single entry point for a level definition, whether it comes
+   from a procedural archetype (A.*) or a handcrafted HANDCRAFTED[] entry.
+   Every field is independent and optional; unset fields fall back to a
+   safe default so a handcrafted level can specify only what it needs. */
+function createLevel(o){
+  o = o || {};
   return {
     nm:      o.nm || '',
     hint:    o.hint || '',
@@ -366,6 +371,7 @@ function lvl(o){
     ports:   o.ports   || []
   };
 }
+const lvl = createLevel; // legacy alias used throughout the archetype table (A.*) below
 
 /* --- 30 archetypes; d = 0..1 difficulty, r = seeded rng --- */
 const A = {};
@@ -602,9 +608,10 @@ const RING = ['intro','spikes','gaps','vanish','rise','stairs','ceil','movers','
               'saws','crush','rundoor','belt','tunnel','maze','button','keyhunt','laser','portal',
               'spinner','tower','pitfall','zigzag','narrow','twobtn','timed','switchb','mixA','mixB'];
 
-const LEVELS = [];
-for(let i=0;i<TOTAL;i++){
-  const w = Math.floor(i / PER_WORLD);
+/* Generates the same procedural level that shipped before this refactor,
+   for a given level index (0-based). Used as the fallback whenever a
+   level id has no handcrafted entry in HANDCRAFTED below. */
+function generateArchetypeLevel(i){
   const inw = i % PER_WORLD;
   const d = Math.min(.97, (i / (TOTAL - 1)) * 1.12);
   const r = seed(i * 7919 + 13);
@@ -613,7 +620,24 @@ for(let i=0;i<TOTAL;i++){
   else if(i < 3)            name = ['intro','spikes','gaps'][i];
   else                      name = RING[(i * 7) % RING.length];
   const L = A[name](d, r);
-  L.id = i + 1; L.world = w; L.arch = name;
+  L.arch = name;
+  return L;
+}
+
+/* Handcrafted level overrides, keyed by 1-based level id (1..120).
+   Populate with createLevel({...}) to replace a specific level; any id
+   left out keeps generating from the archetype system above. This is the
+   seam a future pass fills in to remove archetype repetition. Example:
+     HANDCRAFTED[1] = createLevel({ nm:'انطلاق', blocks:[...], spikes:[...] });
+*/
+const HANDCRAFTED = {};
+
+const LEVELS = [];
+for(let i=0;i<TOTAL;i++){
+  const w = Math.floor(i / PER_WORLD);
+  const id = i + 1;
+  const L = HANDCRAFTED[id] || generateArchetypeLevel(i);
+  L.id = id; L.world = w; if(!L.arch) L.arch = 'handcrafted';
   LEVELS.push(L);
 }
 
