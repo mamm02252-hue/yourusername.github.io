@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en" dir="ltr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
@@ -110,7 +110,7 @@ h2{font-size:20px;font-weight:800;letter-spacing:2px}
 <canvas id="fx"></canvas>
 
 <div id="hud" style="display:none">
-  <span class="l"><b id="hLv">1</b><span class="sub" id="hNm"></span><span id="keyIcon">🔑</span></span>
+  <span class="l"><b id="hLv">1</b><span class="sub" id="hNm"></span><span class="sub" id="hPart"></span><span id="keyIcon">🔑</span></span>
   <span class="r"><span class="sub" id="hDie">0</span><button id="bPause">❚❚</button></span>
 </div>
 
@@ -126,8 +126,8 @@ h2{font-size:20px;font-weight:800;letter-spacing:2px}
 
 <div id="rot">
   <div class="ph"></div>
-  <h2>أدر جهازك</h2>
-  <div class="muted">اللعبة تُلعب بالوضع الأفقي</div>
+  <h2 data-t="rotate">Rotate your device</h2>
+  <div class="muted" data-t="rotateSub">This game is played in landscape mode</div>
 </div>
 
 <!-- MENU -->
@@ -138,84 +138,84 @@ h2{font-size:20px;font-weight:800;letter-spacing:2px}
     <div class="bar"><i id="mBar"></i></div>
     <div class="muted" id="mTxt" style="font-size:11px;letter-spacing:1px"></div>
   </div>
-  <button class="btn main" id="bPlay">ابدأ</button>
+  <button class="btn main" id="bPlay" data-t="play">Start</button>
   <div class="col">
-    <button class="btn" id="bWorlds">المراحل</button>
-    <button class="btn" id="bSet">الإعدادات</button>
+    <button class="btn" id="bWorlds" data-t="worlds">Worlds</button>
+    <button class="btn" id="bSet" data-t="settings">Settings</button>
   </div>
 </div>
 
 <!-- WORLDS -->
 <div class="scr" id="sWorlds">
-  <h2>العوالم</h2>
+  <h2 data-t="worldsTitle">Worlds</h2>
   <div class="worlds" id="wGrid"></div>
-  <button class="btn sm" id="bW2M">رجوع</button>
+  <button class="btn sm" id="bW2M" data-t="back">Back</button>
 </div>
 
 <!-- LEVEL GRID -->
 <div class="scr" id="sGrid">
-  <h2 id="gTtl">عالم</h2>
+  <h2 id="gTtl">World</h2>
   <div class="grid" id="lGrid"></div>
-  <button class="btn sm" id="bG2W">رجوع</button>
+  <button class="btn sm" id="bG2W" data-t="back">Back</button>
 </div>
 
 <!-- SETTINGS -->
 <div class="scr" id="sSet">
-  <h2>الإعدادات</h2>
-  <div class="opt"><span>الصوت</span><div class="sw on" id="swSnd"><i></i></div></div>
-  <div class="opt"><span>الاهتزاز</span><div class="sw on" id="swVib"><i></i></div></div>
-  <div class="opt"><span>اهتزاز الشاشة</span><div class="sw on" id="swShk"><i></i></div></div>
-  <div class="opt"><span>التلميحات</span><div class="sw on" id="swHnt"><i></i></div></div>
-  <button class="btn sm" id="bWipe" style="color:#FF7A7A;border-color:rgba(255,62,62,.3);margin-top:8px">مسح التقدم</button>
-  <button class="btn sm" id="bS2M">رجوع</button>
+  <h2 data-t="settingsTitle">Settings</h2>
+  <div class="opt"><span data-t="sound">Sound</span><div class="sw on" id="swSnd"><i></i></div></div>
+  <div class="opt"><span data-t="vibration">Vibration</span><div class="sw on" id="swVib"><i></i></div></div>
+  <div class="opt"><span data-t="shake">Screen Shake</span><div class="sw on" id="swShk"><i></i></div></div>
+  <div class="opt"><span>Language / اللغة</span><div class="sw" id="swLang"><i></i></div></div>
+  <button class="btn sm" id="bWipe" style="color:#FF7A7A;border-color:rgba(255,62,62,.3);margin-top:8px" data-t="wipe">Clear Progress</button>
+  <button class="btn sm" id="bS2M" data-t="back">Back</button>
 </div>
 
 <!-- PAUSE -->
 <div class="scr sheer" id="sPause">
-  <h2>توقّف</h2>
+  <h2 data-t="paused">Paused</h2>
   <div class="col">
-    <button class="btn main" id="bRes">متابعة</button>
-    <button class="btn" id="bRe">إعادة</button>
-    <button class="btn" id="bP2G">المراحل</button>
-    <button class="btn" id="bP2M">القائمة</button>
+    <button class="btn main" id="bRes" data-t="resume">Resume</button>
+    <button class="btn" id="bRe" data-t="restart">Restart</button>
+    <button class="btn" id="bP2G" data-t="worlds">Worlds</button>
+    <button class="btn" id="bP2M" data-t="menu">Menu</button>
   </div>
 </div>
 
 <!-- DEAD -->
 <div class="scr sheer" id="sDead">
-  <h2 style="color:#FF3E3E;letter-spacing:5px">مُت</h2>
+  <h2 style="color:#FF3E3E;letter-spacing:5px" data-t="dead">Dead</h2>
   <div class="muted" id="dTxt"></div>
   <div class="col">
-    <button class="btn main" id="bRetry">أعد المحاولة</button>
-    <button class="btn sm" id="bSkip" style="display:none">تخطّي المرحلة</button>
-    <button class="btn sm" id="bD2M">القائمة</button>
+    <button class="btn main" id="bRetry" data-t="retry">Retry</button>
+    <button class="btn sm" id="bSkip" style="display:none" data-t="skip">Skip World</button>
+    <button class="btn sm" id="bD2M" data-t="menu">Menu</button>
   </div>
 </div>
 
 <!-- WIN LEVEL -->
 <div class="scr sheer" id="sWin">
-  <h2 style="color:#4ADE80">نجحت</h2>
+  <h2 style="color:#4ADE80" data-t="success">Success</h2>
   <div class="muted" id="wTxt"></div>
   <div class="col">
-    <button class="btn main" id="bNext">التالية</button>
-    <button class="btn sm" id="bW2G">المراحل</button>
+    <button class="btn main" id="bNext" data-t="next">Next</button>
+    <button class="btn sm" id="bW2G" data-t="worlds">Worlds</button>
   </div>
 </div>
 
 <!-- WORLD DONE -->
 <div class="scr" id="sWorldDone">
   <div style="font-size:52px" id="wdIcon">🏆</div>
-  <h2 id="wdTtl">أنهيت العالم</h2>
+  <h2 id="wdTtl">World Complete</h2>
   <div class="muted" id="wdTxt"></div>
-  <button class="btn main" id="bWdNext">العالم التالي</button>
+  <button class="btn main" id="bWdNext" data-t="nextWorld">Next World</button>
 </div>
 
 <!-- ALL DONE -->
 <div class="scr" id="sEnd">
   <div style="font-size:60px">👑</div>
-  <h2 style="color:#FFC53E">أنهيت اللعبة</h2>
+  <h2 style="color:#FFC53E" data-t="gameComplete">Game Complete</h2>
   <div class="muted" id="eTxt"></div>
-  <button class="btn main" id="bE2M">القائمة</button>
+  <button class="btn main" id="bE2M" data-t="menu">Menu</button>
 </div>
 
 <script>
@@ -237,17 +237,18 @@ const COYOTE = 0.10, BUFFER = 0.13;
 const PER_WORLD = 1, WORLDS = 10, TOTAL = PER_WORLD * WORLDS; // كل عالم = مرحلة طويلة واحدة متصلة
 
 const THEMES = [
-  {nm:'الصحراء',      sky1:'#3A2413', sky2:'#8A5A2E', gr:'#C99A54', gr2:'#DCB874', hz:'#FF6B1A', ac:'#2FB8B0', ln:'#8C6534', deco:'sun'},
-  {nm:'الماء',        sky1:'#031C2E', sky2:'#0D4A66', gr:'#0F6E7C', gr2:'#149091', hz:'#FF6EC7', ac:'#7FE7D6', ln:'#0A3548', deco:'bubbles'},
-  {nm:'الفضاء',       sky1:'#05040F', sky2:'#170B2E', gr:'#2A2050', gr2:'#3B2C6E', hz:'#FF3E7A', ac:'#7C9CFF', ln:'#1B1440', deco:'stars'},
-  {nm:'التطوّر',       sky1:'#071615', sky2:'#0E2B29', gr:'#144744', gr2:'#1B615C', hz:'#FF3E3E', ac:'#4ADE80', ln:'#0F2E2B', deco:'leaves'},
-  {nm:'العصر القديم', sky1:'#1B140C', sky2:'#302113', gr:'#5C4426', gr2:'#75592F', hz:'#FF3E3E', ac:'#E8C15E', ln:'#3A2A15', deco:'pillars'},
-  {nm:'المدينة',      sky1:'#0A0A14', sky2:'#1B1330', gr:'#3A2B55', gr2:'#4C3872', hz:'#FF1A5E', ac:'#5BC0EB', ln:'#241A3E', deco:'skyline'},
-  {nm:'النار',        sky1:'#1A0503', sky2:'#4A1004', gr:'#2B1210', gr2:'#4A231D', hz:'#FF7A1A', ac:'#FFD23E', ln:'#3A1008', deco:'volcano'},
-  {nm:'الخريف',       sky1:'#241105', sky2:'#4A230C', gr:'#7A3B18', gr2:'#96501F', hz:'#FF3E3E', ac:'#FFC53E', ln:'#502A10', deco:'leaves'},
-  {nm:'الرعب',        sky1:'#08050A', sky2:'#160A14', gr:'#241220', gr2:'#341A2E', hz:'#FF1A3E', ac:'#7ED957', ln:'#1B0E18', deco:'none'},
-  {nm:'الجنّة',        sky1:'#1B2540', sky2:'#4E6FA8', gr:'#DCE6F5', gr2:'#F0F4FC', hz:'#FF6EC7', ac:'#FFD84A', ln:'#B9C9E8', deco:'clouds'}
+  {nm:'الصحراء',      nmEn:'Desert',    sky1:'#3A2413', sky2:'#8A5A2E', gr:'#C99A54', gr2:'#DCB874', hz:'#FF6B1A', ac:'#2FB8B0', ln:'#8C6534', deco:'sun'},
+  {nm:'الماء',        nmEn:'Water',     sky1:'#031C2E', sky2:'#0D4A66', gr:'#0F6E7C', gr2:'#149091', hz:'#FF6EC7', ac:'#7FE7D6', ln:'#0A3548', deco:'bubbles'},
+  {nm:'الفضاء',       nmEn:'Space',     sky1:'#05040F', sky2:'#170B2E', gr:'#2A2050', gr2:'#3B2C6E', hz:'#FF3E7A', ac:'#7C9CFF', ln:'#1B1440', deco:'stars'},
+  {nm:'التطوّر',       nmEn:'Evolution', sky1:'#071615', sky2:'#0E2B29', gr:'#144744', gr2:'#1B615C', hz:'#FF3E3E', ac:'#4ADE80', ln:'#0F2E2B', deco:'leaves'},
+  {nm:'العصر القديم', nmEn:'Ancient Era', sky1:'#1B140C', sky2:'#302113', gr:'#5C4426', gr2:'#75592F', hz:'#FF3E3E', ac:'#E8C15E', ln:'#3A2A15', deco:'pillars'},
+  {nm:'المدينة',      nmEn:'City',      sky1:'#0A0A14', sky2:'#1B1330', gr:'#3A2B55', gr2:'#4C3872', hz:'#FF1A5E', ac:'#5BC0EB', ln:'#241A3E', deco:'skyline'},
+  {nm:'النار',        nmEn:'Fire',      sky1:'#1A0503', sky2:'#4A1004', gr:'#2B1210', gr2:'#4A231D', hz:'#FF7A1A', ac:'#FFD23E', ln:'#3A1008', deco:'volcano'},
+  {nm:'الخريف',       nmEn:'Autumn',    sky1:'#241105', sky2:'#4A230C', gr:'#7A3B18', gr2:'#96501F', hz:'#FF3E3E', ac:'#FFC53E', ln:'#502A10', deco:'leaves'},
+  {nm:'الرعب',        nmEn:'Horror',    sky1:'#08050A', sky2:'#160A14', gr:'#241220', gr2:'#341A2E', hz:'#FF1A3E', ac:'#7ED957', ln:'#1B0E18', deco:'none'},
+  {nm:'الجنّة',        nmEn:'Paradise',  sky1:'#1B2540', sky2:'#4E6FA8', gr:'#DCE6F5', gr2:'#F0F4FC', hz:'#FF6EC7', ac:'#FFD84A', ln:'#B9C9E8', deco:'clouds'}
 ];
+const wname = (w) => (SV.lang === 'ar' ? THEMES[w].nm : THEMES[w].nmEn);
 
 /* ---------- 2. SAVE ---------- */
 const SKEY = 'fakh_v1';
@@ -257,7 +258,7 @@ const DB = {
              catch(e){ return (k in ram) ? ram[k] : d; } },
   set(k, v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){ ram[k] = v; } }
 };
-let SV = Object.assign({ best:0, done:[], deaths:0, snd:true, vib:true, shk:true, hnt:true }, DB.get(SKEY, {}));
+let SV = Object.assign({ best:0, done:[], deaths:0, snd:true, vib:true, shk:true, hnt:true, lang:'en' }, DB.get(SKEY, {}));
 if(!Array.isArray(SV.done)) SV.done = [];
 const saveNow = () => DB.set(SKEY, SV);
 const isDone = i => SV.done.indexOf(i) >= 0;
@@ -653,7 +654,7 @@ function generateArchetypeLevel(i){
 function buildWorld(segFns, opts){
   let x = 0;
   const L = { blocks:[], spikes:[], traps:[], buttons:[], gates:[], key:null, ports:[] };
-  const checkpoints = [];
+  const boundaries = []; // حدود آمنة بين المقاطع (أرض مستوية دائماً) لاختيار نقاط التفتيش منها
   for(let i=0;i<segFns.length;i++){
     const s = segFns[i](x);
     if(s.blocks)  L.blocks.push(...s.blocks);
@@ -663,11 +664,21 @@ function buildWorld(segFns, opts){
     if(s.gates)   L.gates.push(...s.gates);
     if(s.key && !L.key) L.key = s.key;
     if(s.ports)   L.ports.push(...s.ports);
-    // نقطة تفتيش عند بداية كل مقطع تحدٍّ (تخطّى مقطع البداية التعليمي ومقطع
-    // النهاية المسطّح) — تبعد الموت عن إعادتك لبداية العالم بالكامل
-    if(i >= 1 && i <= segFns.length - 2) checkpoints.push({ x: x + 20, y: GY - PH });
+    // تخطّى مقطع البداية التعليمي ومقطع النهاية المسطّح — البقية حدود آمنة
+    if(i >= 1 && i <= segFns.length - 2) boundaries.push(x + 20);
     x += s.w;
   }
+  // 10 أجزاء بكل عالم دائماً: 9 نقاط تفتيش موزّعة بالتساوي على الحدود الآمنة
+  // المتاحة، بغض النظر عن عدد المقاطع الفعلي في هذا العالم
+  const NPARTS = 9;
+  let cpX;
+  if(boundaries.length <= NPARTS) cpX = boundaries;
+  else {
+    cpX = [];
+    for(let i=0;i<NPARTS;i++) cpX.push(boundaries[Math.round(i * (boundaries.length-1) / (NPARTS-1))]);
+    cpX = [...new Set(cpX)];
+  }
+  const checkpoints = cpX.map(cx0 => ({ x: cx0, y: GY - PH }));
   return createLevel(Object.assign({
     nm: opts.nm, hint: opts.hint,
     blocks: L.blocks, spikes: L.spikes, traps: L.traps,
@@ -865,6 +876,7 @@ HANDCRAFTED[4] = buildWorld([
   SEG.invertZone(460),                    // تطبيق: تحكم معكوس
   SEG.buttonGate(460, 'ev1'),             // لغز
   SEG.blinkBridge(440, 4), SEG.laser(500, 3),                      // دمج
+  SEG.gravityZone(380, .8),                                        // دمج إضافي: بيئة تتغيّر تدريجياً
   SEG.crush(480, 2),                                               // اختبار نهائي
   SEG.flat(260)
 ], { nm:'التطوّر', hint:'راقب نمط المنصة الوامضة قبل أن تخطو' });
@@ -930,6 +942,7 @@ HANDCRAFTED[9] = buildWorld([
   SEG.invertZone(440),                    // تعليم: تحكم معكوس وحده
   SEG.blinkBridge(420, 3),                // تطبيق: منصة مخفية بالظلام
   SEG.darkPassage(460, 3),                // تطبيق: ممر أطول وأحلك
+  SEG.crumbleBridge(420, 3),              // تطبيق إضافي: أرض تختفي تحتك في الظلام
   SEG.saw(480, 3), SEG.darkPassage(480, 3),                        // دمج: خطر متحرك + ظلام
   SEG.invertZone(460), SEG.darkPassage(500, 3),                    // اختبار نهائي
   SEG.flat(280)
@@ -949,12 +962,27 @@ HANDCRAFTED[10] = buildWorld([
   SEG.flat(320)
 ], { nm:'الجنّة', hint:'الجمال هنا خدّاع — كل تفصيل محسوب بدقة' });
 
+/* صعوبة تصاعدية خفيفة عبر العوالم العشرة: كل عالم لاحق أسرع/أضيق نافذة
+   توقيت قليلاً من سابقه، دون أي قفزة ظالمة — البنية (تعليم/تطبيق/دمج/اختبار)
+   داخل كل عالم تبقى كما صُمّمت. */
+function tuneDifficulty(L, w){
+  const k = 1 + w * 0.045;
+  for(const t of L.traps){
+    if(t.type === 'saw' || t.type === 'mover') t.sp *= k;
+    if(t.type === 'crush' || t.type === 'laser') t.per = Math.max(.85, t.per / k);
+    if(t.type === 'rise' || t.type === 'drop') t.sp *= Math.min(1.3, k);
+    if(t.type === 'wind' && t.force < 0) t.force *= k;
+  }
+  return L;
+}
+
 const LEVELS = [];
 for(let i=0;i<TOTAL;i++){
   const w = Math.floor(i / PER_WORLD);
   const id = i + 1;
   const L = HANDCRAFTED[id] || generateArchetypeLevel(i);
   L.id = id; L.world = w; if(!L.arch) L.arch = 'handcrafted';
+  tuneDifficulty(L, w);
   LEVELS.push(L);
 }
 
@@ -989,7 +1017,6 @@ function load(i, fromCheckpoint){
   P.walk = 0; P.coy = 0; P.buf = 0; P.sq = 1; P.st = 1; P.ride = null; P.cut = false;
   S.camX = Math.max(0, Math.min(S.L.len - VW, P.x + PW/2 - VW/2));
   syncHUD();
-  if(S.L.hint && SV.hnt) showHint(S.L.hint);
 }
 
 function solidList(){
@@ -1045,7 +1072,7 @@ function kill(){
   SFX.die(); buzz(45); shake(16); S.flash = .35;
   setTimeout(() => {
     if(S.mode !== 'play') return;
-    $('dTxt').textContent = 'المرحلة ' + S.L.id + ' — ' + S.dieCount + ' محاولة';
+    $('dTxt').textContent = t('worldLabel') + S.L.id + ' — ' + S.dieCount + t('attempt');
     $('bSkip').style.display = S.dieCount >= 8 ? 'block' : 'none';
     scr('sDead');
   }, 620);
@@ -1237,7 +1264,8 @@ function stepPlayer(dt){
     while(S.cpPassed < S.L.checkpoints.length && P.x > S.L.checkpoints[S.cpPassed].x){
       CP = { x:S.L.checkpoints[S.cpPassed].x, y:S.L.checkpoints[S.cpPassed].y };
       S.cpPassed++;
-      showToast('✓ نقطة تفتيش');
+      showToast(t('checkpoint'));
+      syncHUD();
     }
   }
 
@@ -1297,7 +1325,7 @@ function stepPlayer(dt){
   if(k && !k.got && hit(P.x, P.y, PW, PH, k.x, k.y, k.w, k.h)){
     k.got = true; S.hasKey = true; SFX.key(); buzz(20);
     burst(k.x + 10, k.y + 10, 14, '#FFC53E', 160);
-    showToast('🔑 حصلت على المفتاح');
+    showToast(t('keyCollected'));
     $('keyIcon').classList.add('on');
   }
 
@@ -1305,7 +1333,7 @@ function stepPlayer(dt){
   const rd = S.L.traps.find(t => t.type === 'rundoor');
   if(rd) dr = rd;
   if(hit(P.x, P.y, PW, PH, dr.x, dr.y, dr.w || DW, dr.h || DH)){
-    if(S.L.key && !S.L.key.got){ if(!S.nagT || S.t - S.nagT > 1.2){ S.nagT = S.t; showToast('الباب مقفل — ابحث عن المفتاح'); SFX.gate(); } }
+    if(S.L.key && !S.L.key.got){ if(!S.nagT || S.t - S.nagT > 1.2){ S.nagT = S.t; showToast(t('doorLocked')); SFX.gate(); } }
     else win();
   }
 }
@@ -1323,7 +1351,7 @@ function win(){
     const w = S.L.world;
     if(S.idx + 1 >= TOTAL) return showEnd();
     if((S.idx + 1) % PER_WORLD === 0) return showWorldDone(w);
-    $('wTxt').textContent = 'المرحلة ' + S.L.id + ' — ' + (S.dieCount === 0 ? 'بلا موت' : S.dieCount + ' محاولة');
+    $('wTxt').textContent = t('worldLabel') + S.L.id + ' — ' + (S.dieCount === 0 ? t('noDeaths') : S.dieCount + t('attempt'));
     scr('sWin');
   }, 700);
 }
@@ -1519,11 +1547,6 @@ function draw(){
   cx.fillStyle = g; cx.fillRect(0, 0, VW, VH);
 
   drawDeco(cx, T, S.camX);
-
-  cx.strokeStyle = T.ln; cx.lineWidth = 1;
-  const gridOff = -(S.camX * .3) % 48;                 // شبكة خلفية بمنظور بعيد (parallax خفيف)
-  for(let x = gridOff; x < VW; x += 48){ cx.beginPath(); cx.moveTo(x, 0); cx.lineTo(x, VH); cx.stroke(); }
-  for(let y = 0; y < VH; y += 48){ cx.beginPath(); cx.moveTo(0, y); cx.lineTo(VW, y); cx.stroke(); }
 
   cx.save(); cx.translate(-S.camX, 0);                  // كل عناصر العالم تتحرك مع الكاميرا من هنا
   for(const t of S.L.traps){
@@ -1763,6 +1786,65 @@ function draw(){
 }
 
 /* ---------- 9. UI ---------- */
+const I18N = {
+  rotate:{en:'Rotate your device', ar:'أدر جهازك'},
+  rotateSub:{en:'This game is played in landscape mode', ar:'اللعبة تُلعب بالوضع الأفقي'},
+  play:{en:'Start', ar:'ابدأ'},
+  worlds:{en:'Worlds', ar:'المراحل'},
+  settings:{en:'Settings', ar:'الإعدادات'},
+  worldsTitle:{en:'Worlds', ar:'العوالم'},
+  back:{en:'Back', ar:'رجوع'},
+  settingsTitle:{en:'Settings', ar:'الإعدادات'},
+  sound:{en:'Sound', ar:'الصوت'},
+  vibration:{en:'Vibration', ar:'الاهتزاز'},
+  shake:{en:'Screen Shake', ar:'اهتزاز الشاشة'},
+  wipe:{en:'Clear Progress', ar:'مسح التقدم'},
+  paused:{en:'Paused', ar:'توقّف'},
+  resume:{en:'Resume', ar:'متابعة'},
+  restart:{en:'Restart', ar:'إعادة'},
+  menu:{en:'Menu', ar:'القائمة'},
+  dead:{en:'Dead', ar:'مُت'},
+  retry:{en:'Retry', ar:'أعد المحاولة'},
+  skip:{en:'Skip World', ar:'تخطّي العالم'},
+  success:{en:'Success', ar:'نجحت'},
+  next:{en:'Next', ar:'التالية'},
+  nextWorld:{en:'Next World', ar:'العالم التالي'},
+  gameComplete:{en:'Game Complete', ar:'أنهيت اللعبة'},
+  worldComplete:{en:'World Complete', ar:'أنهيت العالم'},
+  lastWorldNext:{en:'The final world awaits', ar:'المرحلة الأخيرة قادمة'},
+  nextWorldIs:{en:'Next world: ', ar:'العالم التالي: '},
+  progress:{en:' of ', ar:' من '},
+  worldsWord:{en:' worlds', ar:' عالم'},
+  finished:{en:'Finished ', ar:'أنهيت '},
+  worldsWithDeaths:{en:' worlds with ', ar:' عالم بـ '},
+  deathsWord:{en:' deaths.', ar:' موتة.'},
+  attempt:{en:' attempt', ar:' محاولة'},
+  checkpoint:{en:'✓ Checkpoint', ar:'✓ نقطة تفتيش'},
+  keyCollected:{en:'🔑 Key collected', ar:'🔑 حصلت على المفتاح'},
+  doorLocked:{en:'Door locked — find the key', ar:'الباب مقفل — ابحث عن المفتاح'},
+  part:{en:'Part ', ar:'الجزء '},
+  worldLabel:{en:'World ', ar:'المرحلة '},
+  noDeaths:{en:'no deaths', ar:'بلا موت'},
+  wipeConfirm:{en:'Clear all progress?', ar:'مسح كل التقدم؟'},
+  start:{en:'Start', ar:'ابدأ'},
+  locked:{en:'🔒', ar:'🔒'},
+  worldDone:{en:'✓ Done', ar:'✓ منجز'},
+};
+const t = (k) => (I18N[k] ? I18N[k][SV.lang || 'en'] : k);
+function applyLang(){
+  const lang = SV.lang || 'en';
+  document.documentElement.lang = lang;
+  document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+  document.querySelectorAll('[data-t]').forEach(el => {
+    const k = el.getAttribute('data-t');
+    if(I18N[k]) el.textContent = I18N[k][lang];
+  });
+  const sl = $('swLang'); if(sl) sl.classList.toggle('on', lang === 'ar');
+  updateMenuProgress();
+  if(S.L) syncHUD();
+  if($('sWorlds').classList.contains('on')) buildWorlds();
+}
+
 const SCREENS = ['sMenu','sWorlds','sGrid','sSet','sPause','sDead','sWin','sWorldDone','sEnd'];
 function scr(id){
   SCREENS.forEach(s => $(s).classList.toggle('on', s === id));
@@ -1787,7 +1869,9 @@ function showHint(m){
 }
 function syncHUD(){
   $('hLv').textContent  = S.L.id;
-  $('hNm').textContent  = S.L.nm;
+  $('hNm').textContent  = wname(S.L.world);
+  const cps = S.L.checkpoints ? S.L.checkpoints.length + 1 : 1;
+  $('hPart').textContent = t('part') + (S.cpPassed + 1) + '/' + cps;
   $('hDie').textContent = '☠ ' + SV.deaths;
   $('keyIcon').style.display = S.L.key ? 'inline' : 'none';
   $('keyIcon').classList.toggle('on', !!(S.L.key && S.L.key.got));
@@ -1798,21 +1882,24 @@ function togglePause(){
   if(S.mode === 'play') scr('sPause');
   else if($('sPause').classList.contains('on')) scr(null);
 }
-function toMenu(){
-  scr('sMenu');
+function updateMenuProgress(){
   const pct = Math.round(SV.done.length / TOTAL * 100);
   $('mBar').style.width = pct + '%';
-  $('mTxt').textContent = SV.done.length + ' من ' + TOTAL + ' مرحلة  ·  ☠ ' + SV.deaths;
+  $('mTxt').textContent = SV.done.length + t('progress') + TOTAL + t('worldsWord') + '  ·  ☠ ' + SV.deaths;
+}
+function toMenu(){
+  scr('sMenu');
+  updateMenuProgress();
 }
 function showWorldDone(w){
   $('wdIcon').textContent = ['🔧','⚙️','🧪','🔥','🗝️','👁️'][w] || '🏆';
-  $('wdTtl').textContent  = 'أنهيت ' + THEMES[w].nm;
-  $('wdTxt').textContent  = (w + 1 < WORLDS) ? ('العالم التالي: ' + THEMES[w+1].nm) : 'المرحلة الأخيرة قادمة';
+  $('wdTtl').textContent  = t('worldComplete') + ' — ' + wname(w);
+  $('wdTxt').textContent  = (w + 1 < WORLDS) ? (t('nextWorldIs') + wname(w+1)) : t('lastWorldNext');
   SFX.win();
   scr('sWorldDone');
 }
 function showEnd(){
-  $('eTxt').textContent = 'أنهيت ' + TOTAL + ' مرحلة بـ ' + SV.deaths + ' موتة.';
+  $('eTxt').textContent = t('finished') + TOTAL + t('worldsWithDeaths') + SV.deaths + t('deathsWord');
   SFX.win();
   scr('sEnd');
 }
@@ -1826,9 +1913,9 @@ function buildWorlds(){
     d.className = 'wc' + (open ? '' : ' lock');
     const dot = document.createElement('div');
     dot.className = 'dot'; dot.style.background = THEMES[w].ac;
-    const nm = document.createElement('div'); nm.className = 'nm'; nm.textContent = THEMES[w].nm;
+    const nm = document.createElement('div'); nm.className = 'nm'; nm.textContent = wname(w);
     const pc = document.createElement('div'); pc.className = 'pc';
-    pc.textContent = open ? (done ? '✓ منجز' : 'ابدأ') : '🔒';
+    pc.textContent = open ? (done ? t('worldDone') : t('start')) : t('locked');
     d.appendChild(dot); d.appendChild(nm); d.appendChild(pc);
     if(open) d.onclick = () => { SFX.tap(); start(w); };
     g.appendChild(d);
@@ -1857,7 +1944,8 @@ const tap = (id, fn) => { const e = $(id); if(e) e.onclick = () => { SFX.tap(); 
 tap('bPlay',   () => start(Math.min(SV.best, TOTAL - 1)));
 tap('bWorlds', () => { buildWorlds(); scr('sWorlds'); });
 tap('bSet',    () => { swap($('swSnd'),'snd'); swap($('swVib'),'vib');
-                       swap($('swShk'),'shk'); swap($('swHnt'),'hnt'); scr('sSet'); });
+                       swap($('swShk'),'shk'); scr('sSet'); });
+$('swLang').onclick = () => { SV.lang = (SV.lang === 'ar' ? 'en' : 'ar'); saveNow(); applyLang(); SFX.tap(); };
 tap('bW2M',    toMenu);
 tap('bS2M',    toMenu);
 tap('bG2W',    () => { buildWorlds(); scr('sWorlds'); });
@@ -1875,7 +1963,7 @@ tap('bW2G',    () => { buildWorlds(); scr('sWorlds'); });
 tap('bWdNext', () => { if(S.idx + 1 < TOTAL) start(S.idx + 1); else showEnd(); });
 tap('bE2M',    toMenu);
 tap('bWipe',   () => {
-  if(!confirm('مسح كل التقدم؟')) return;
+  if(!confirm(t('wipeConfirm'))) return;
   SV.best = 0; SV.done = []; SV.deaths = 0; saveNow(); toMenu();
 });
 
@@ -1885,7 +1973,7 @@ document.addEventListener('dblclick', e => e.preventDefault());
 
 S.L = clone(LEVELS[0]);
 P.x = S.L.spawn.x; P.y = S.L.spawn.y;
-fit(); toMenu();
+fit(); applyLang(); toMenu();
 requestAnimationFrame(frame);
 </script>
 </body>
